@@ -10,7 +10,7 @@ function App() {
       <h1 className = 'text-2x1 font-bold underline'>
       TCA Toss Coin
       </h1>
-      <button className='btn btn-primary'>play toss coin</button>
+      <button className='btn btn-secondary btn-soft'>play toss coin</button>
     </div>
   )
 }
