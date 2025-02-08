@@ -7,12 +7,16 @@ function App() {
         TCA Toss Coin
       </h1>
       <div>
-        <button className="btn btn-secondary btn-soft btn-soft btn-xl p-4 ml-8">
+        <button className="btn btn-secondary btn-soft btn-soft btn-xl p-4 ml-8 w-full lg:w-auto text-nowrap">
           start to play
         </button>
         <h2 className="mt-3 ml-6 text-xl font-semi-bold">Leaderboard</h2>
 
-        <div className="card-lg w-full bg-base-100 shadow-xl mt-4">
+        <div 
+        className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+        >
+
+<div className="card-lg w-full bg-base-100 shadow-xl mt-4">
           <div className="card-body">
             <h2 className="card-title">Leaderboard</h2>
             <p>Leaderboard coming soon...........</p>
@@ -75,9 +79,14 @@ function App() {
               </div>
             </div>
 
-            
+
           </div>
         </div>
+
+        </div>
+
+
+        
       </div>
     </div>
   );
