@@ -1,21 +1,8 @@
 import "./App.css";
 import { HashRouter,Routes,Route } from "react-router";
-
-const Home = () => {
-  return (
-    <>
-    <h3 className="text-2xl font-bold">
-    Home
-    </h3>
-    <button 
-      className="btn btn-active btn-secondary btn-lg mt-4"
-    >
-      toss coin
-    </button>
-    </>
-  );
-};
-
+import {Home} from './Home';
+import { Setup } from "./setup";
+import { Play } from "./play";
 const App = () => {
   console.log("App component funct called !!!");
   return (
@@ -23,6 +10,10 @@ const App = () => {
       <HashRouter>
         <Routes>
           <Route path="/" element ={<Home />}
+          />
+          <Route path="/Setup" element ={<Setup />}
+          />
+          <Route path="/Play" element ={<Play />}
           />
         </Routes>
       </HashRouter>
