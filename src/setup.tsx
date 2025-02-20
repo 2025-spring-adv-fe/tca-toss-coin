@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router";
+
 export const Setup = () => {
+  const nav = useNavigate()
   return (
     <>
       <h3 
@@ -6,7 +9,13 @@ export const Setup = () => {
         >
           setup
         </h3>
-      <button className="btn btn-active btn-secondary btn-lg mt-4">
+      <button 
+      className="btn btn-active btn-secondary btn-lg mt-4"
+      onClick={
+            () =>nav("/play")
+
+      }
+      >
         Start tossing
       </button>
     </>
