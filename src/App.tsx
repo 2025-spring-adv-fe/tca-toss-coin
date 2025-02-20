@@ -1,16 +1,32 @@
 import "./App.css";
+import { HashRouter,Routes,Route } from "react-router";
 
-function App() {
+const Home = () => {
   return (
-    <div>
-      <h1 className="text-2xl font-bold bg-base-300 p-4">TCA Toss Coin</h1>
-      <div className="p-4"
-      >
-        <button className="btn btn-secondary btn-outline btn-soft btn-xl p-6">
-          Play Toss Coin
-        </button>
-        <h2 className="mt-3 font-semi-bold">Leaderboard</h2>
-      </div>
+    <>
+    <h3 className="text-2xl font-bold">
+    Home
+    </h3>
+    <button 
+      className="btn btn-active btn-secondary btn-lg mt-4"
+    >
+      toss coin
+    </button>
+    </>
+  );
+};
+
+const App = () => {
+  console.log("App component funct called !!!");
+  return (
+    <div className="p-4">
+      <HashRouter>
+        <Routes>
+          <Route path="/" element ={<Home />}
+          />
+        </Routes>
+      </HashRouter>
+     
     </div>
   );
 }
