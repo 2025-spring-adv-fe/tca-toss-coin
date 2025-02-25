@@ -12,7 +12,7 @@ export const Play = () => {
       <h3 
       className="text-2xl font-bold"
       >
-        play
+        play(o game palayed)
         </h3>
        <h4 
        className="text-lg font-semibold"

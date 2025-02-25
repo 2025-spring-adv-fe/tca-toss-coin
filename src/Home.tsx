@@ -8,7 +8,7 @@ export const Home = () => {
       <h3 
       className="text-2xl font-bold"
       >
-        Home
+        Home(o game palayed)
         </h3>
       <button 
       className="btn btn-active btn-secondary btn-lg mt-4"

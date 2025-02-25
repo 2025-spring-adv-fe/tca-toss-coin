@@ -7,7 +7,7 @@ export const Setup = () => {
       <h3 
         className="text-2xl font-bold"
         >
-          setup
+          setup(o game palayed)
         </h3>
       <button 
       className="btn btn-active btn-secondary btn-lg mt-4"
