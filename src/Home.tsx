@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router"; 
+
 interface HomeProps {
-  totalGameCount: number; 
+  totalGameCount: number;
 }
 
-export const Home: React.FC<HomeProps> = ({ totalGameCount }) => { 
+export const Home: React.FC<HomeProps> = ({ totalGameCount }) => {
   const nav = useNavigate();
 
   return (

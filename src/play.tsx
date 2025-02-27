@@ -1,42 +1,40 @@
-import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useNavigate } from "react-router"; 
+import React, { useState } from "react";
 
-export const Play = () => {
+interface PlayProps {
+  totalGameCount: number;
+  setTotalGameCount: (newValue: number) => void;
+}
+
+export const Play: React.FC<PlayProps> = ({
+  totalGameCount: tossCoin,
+  setTotalGameCount,
+}) => {
   const nav = useNavigate();
-
   const [turnNumber, setTurnNumber] = useState(6);
-  
-  //let turnNumber = 6;
+
   return (
     <>
-      <h3 
-      className="text-2xl font-bold"
-      >
-        play(o game palayed)
-        </h3>
-       <h4 
-       className="text-lg font-semibold"
-       >
-        Turn #{turnNumber}
-        <button 
-        className="btn btn-active btn-secondary btn-lg mt-4 "
-        onClick={() => {
-         setTurnNumber(turnNumber + 1); 
-          console.log("Turn Number:", turnNumber); 
-         }}
+      <h3 className="text-2xl font-bold">
+        Play ({tossCoin} games played)
+      </h3>
+      <h4 className="text-lg font-semibold">
+        Play #{turnNumber}
+        <button
+          className="btn btn-active btn-lg mt-4"
+          onClick={() => setTurnNumber((prevTurn) => prevTurn + 1)}
         >
           +
         </button>
-       </h4>
-    
-      <button 
-      className="btn btn-active btn-secondary btn-lg mt-4"
-      onClick={
-            () => nav (-2)
+      </h4>
 
-      }
+      <button
+        className="btn btn-active btn-secondary btn-lg mt-4"
+        onClick={() => {
+          setTotalGameCount(tossCoin + 1); 
+          nav(-2);
+        }}
       >
-        
         Done
       </button>
     </>
