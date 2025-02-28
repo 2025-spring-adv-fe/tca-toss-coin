@@ -58,8 +58,23 @@ import { GameResult, getLeaderboard } from './GameResults';
 const App = () => {
   console.log("App component function called !!!");
 
-  
+  //
+  //hooks
+  //
   const [gameResults,setGameResults] = useState(dummyGameResults);
+
+//
+//other not hooks...............
+//
+
+const addNewGameResult = (newGameResult:GameResult) => setGameResults(
+
+  [
+    ...gameResults,
+    newGameResult
+  ]
+);
+
 
   return (
     <div className="p-4">
@@ -82,6 +97,7 @@ const App = () => {
           <Route 
             path="/play" 
             element={<Play totalGameCount={gameResults.length} />} 
+            addNewGameResult={addNewGameResult}
           />
         </Routes>
       </HashRouter>
