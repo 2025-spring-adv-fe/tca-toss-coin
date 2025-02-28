@@ -31,12 +31,6 @@ export const Home: React.FC<HomeProps> = ({
 
           </h2>
 
-
-
-
-
-
-
             {
             leaderboardData.length > 0
             ?(

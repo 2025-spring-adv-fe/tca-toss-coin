@@ -9,7 +9,7 @@ interface PlayProps {
 }
 
 export const Play: React.FC<PlayProps> = ({
-  totalGameCount: tossCoin,
+  totalGameCount: totalGameCount,
   addNewGameResult
   
 }) => {
@@ -22,7 +22,7 @@ export const Play: React.FC<PlayProps> = ({
       className="text-2xl font-bold"
       >
         Play 
-        ({tossCoin} games played)
+        ({totalGameCount} games played)
       </h3>
       <h4 
       className="text-lg font-semibold">
