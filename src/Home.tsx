@@ -25,19 +25,38 @@ export const Home: React.FC<HomeProps> = ({
       >
         Toss Coin
       </button>
-      <div 
-          className="card w-96 bg-base-100 card-md shadow-sm"
-      >
-        <div 
-            className="card-body">
-          <h2 
-              className="card-title"
-          >
-            leaderboard
-          </h2>
-          <p>
-            leaderboard goes here !!!
-          </p>
+      <div className="card w-full bg-base-100 card-md shadow-sm">
+        <div className="card-body">
+          <h2 className="card-title">leaderboard</h2>
+
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>AVG</th>
+                  <th>PLAYER</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {
+                    leaderboardData.map(
+                      x=> (
+                        <tr>
+                          <td>{x.wins}</td>
+                          <td>{ x.losses }</td>
+                          <td>{x.average }</td>
+                          <td>{x.player}</td>
+                        </tr>
+                      )
+                    )
+                  }
+                
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
