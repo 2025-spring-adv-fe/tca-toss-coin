@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router"; 
+import { useNavigate } from "react-router";
 import { LeaderboardEntry } from "./GameResults";
 
 interface HomeProps {
@@ -7,11 +7,9 @@ interface HomeProps {
 }
 
 export const Home: React.FC<HomeProps> = ({
-   totalGameCount,
-   leaderboardData
-
- }) => {
-
+  totalGameCount,
+  leaderboardData,
+}) => {
   console.log(leaderboardData);
 
   const nav = useNavigate();
@@ -27,6 +25,21 @@ export const Home: React.FC<HomeProps> = ({
       >
         Toss Coin
       </button>
+      <div 
+          className="card w-96 bg-base-100 card-md shadow-sm"
+      >
+        <div 
+            className="card-body">
+          <h2 
+              className="card-title"
+          >
+            leaderboard
+          </h2>
+          <p>
+            leaderboard goes here !!!
+          </p>
+        </div>
+      </div>
     </>
   );
 };
