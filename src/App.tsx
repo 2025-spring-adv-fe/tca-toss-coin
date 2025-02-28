@@ -4,7 +4,7 @@ import { Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
 import { useState } from "react";
-import { GameResult } from './GameResults';
+import { GameResult, getLeaderboard } from './GameResults';
 
 // const dummyGameResults: Array<GameResult> = [
   const dummyGameResults: GameResult[] = [
@@ -67,7 +67,13 @@ const App = () => {
         <Routes>
           <Route 
             path="/" 
-            element={<Home totalGameCount={gameResults.length} />} 
+            element={<Home totalGameCount={gameResults.length} 
+            leaderboardData={
+            getLeaderboard(gameResults)
+
+            }
+            />
+          } 
           />
           <Route 
             path="/setup" 
