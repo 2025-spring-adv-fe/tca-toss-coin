@@ -3,13 +3,12 @@ import React, { useState } from "react";
 import { GameResult } from "./GameResults";
 
 interface PlayProps {
-  totalGameCount: number;
+
   addNewGameResult: (r:GameResult) =>void;
   
 }
 
 export const Play: React.FC<PlayProps> = ({
-  totalGameCount: totalGameCount,
   addNewGameResult
   
 }) => {
@@ -18,12 +17,6 @@ export const Play: React.FC<PlayProps> = ({
 
   return (
     <>
-      <h3 
-      className="text-2xl font-bold"
-      >
-        Play 
-        ({totalGameCount} games played)
-      </h3>
       <h4 
       className="text-lg font-semibold">
         Turn #{turnNumber}

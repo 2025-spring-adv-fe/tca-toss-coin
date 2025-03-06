@@ -71,20 +71,19 @@ const App = () => {
             path="/"
             element={
               <Home
-                totalGameCount={gameResults.length}
                 leaderboardData={getLeaderboard(gameResults)}
               />
             }
           />
           <Route
             path="/setup"
-            element={<Setup totalGameCount={gameResults.length} />}
+            element={<Setup />
+              }
           />
           <Route
             path="/play"
             element={
               <Play
-                totalGameCount={gameResults.length}
                 addNewGameResult={addNewGameResult}
               />
             }
