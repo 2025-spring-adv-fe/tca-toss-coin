@@ -35,8 +35,6 @@ const dummyGameResults: GameResult[] = [
 ];
 
 const App = () => {
-  console.log("App component function called !!!");
-
   //
   //hooks
   //
