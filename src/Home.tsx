@@ -18,8 +18,14 @@ export const Home: React.FC<HomeProps> = ({
 }) => {
   console.log(leaderboardData);
 
+<<<<<<< Updated upstream
   useEffect (
     () => setTitle("Home")
+=======
+
+  useEffect(
+    () => setTitle(AppTitle)
+>>>>>>> Stashed changes
     ,[]
   );
 
