@@ -16,15 +16,13 @@ export const Home: React.FC<HomeProps> = ({
   leaderboardData,
   setTitle
 }) => {
+  console.log(leaderboardData);
 
-  useEffect(
-    () => setTitle(AppTitle)
+  useEffect (
+    () => setTitle("Home")
     ,[]
   );
-  
 
-
-  //use a react hook for button nvigation..
   const nav = useNavigate();
 
   return (
@@ -61,7 +59,11 @@ export const Home: React.FC<HomeProps> = ({
                     {
                       leaderboardData.map(
                         x=> (
-                          <tr>
+
+                          <tr 
+                              key={x.player}
+                          >
+                              
                             <td>{x.wins}</td>
                             <td>{ x.losses }</td>
                             <td>{x.average }</td>
