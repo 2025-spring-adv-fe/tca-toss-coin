@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"; 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GameResult } from "./GameResults";
 
 interface PlayProps {
@@ -13,7 +13,13 @@ export const Play: React.FC<PlayProps> = ({
   addNewGameResult
   ,setTitle
 }) => {
-  setTitle("play")
+
+useEffect(
+  () => setTitle("play")
+  ,[]
+);
+
+ 
   const nav = useNavigate();
   const [turnNumber, setTurnNumber] = useState(0);
 

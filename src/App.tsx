@@ -73,7 +73,8 @@ const App = () => {
             path="/"
             element={
               <Home
-                leaderboardData={getLeaderboard(gameResults)
+                leaderboardData={
+                  getLeaderboard(gameResults)
                 }
                 setTitle={setTitle}
               />
