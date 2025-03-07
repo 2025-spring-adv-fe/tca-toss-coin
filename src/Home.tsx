@@ -1,24 +1,32 @@
 import { useNavigate } from "react-router";
 import { LeaderboardEntry } from "./GameResults";
+import { useEffect } from "react";
+
+
+
+export const AppTitle = "Toss Coin"
+
 
 interface HomeProps {
-  totalGameCount: number;
   leaderboardData: LeaderboardEntry[];
+  setTitle: (t: string) =>void;
 }
 
 export const Home: React.FC<HomeProps> = ({
-  totalGameCount,
   leaderboardData,
+  setTitle
 }) => {
+  console.log(leaderboardData);
 
-  //use a react hook for button navigation
+  useEffect (
+    () => setTitle("Home")
+    ,[]
+  );
+
   const nav = useNavigate();
 
   return (
     <>
-      <h3 className="text-2xl font-bold">
-        Home ({totalGameCount} games played)
-      </h3>
       <button
         className="btn btn-active btn-secondary btn-lg mt-4"
         onClick={() => nav("/setup")}
