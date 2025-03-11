@@ -7,4 +7,6 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss(),
   ],
+  build:{outDir: "docs"},
+  base:"/tca-toss-coin/"
 })
