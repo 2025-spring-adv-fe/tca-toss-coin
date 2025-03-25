@@ -4,7 +4,7 @@ import { AppTitle,Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
 import { useState } from "react";
-import { GameResult, getLeaderboard } from "./GameResults";
+import { GameResult, getGeneralFacts, getLeaderboard } from "./GameResults";
 
 //const dummyGameResults: Array<GameResult> = [
   const dummyGameResults: GameResult[] = [
@@ -70,6 +70,9 @@ const App = () => {
                   getLeaderboard(gameResults)
                 }
                 setTitle={setTitle}
+                generalFacts={getGeneralFacts(gameResults)
+                  
+                }
               />
             }
           />

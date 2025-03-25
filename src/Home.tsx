@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { LeaderboardEntry } from "./GameResults";
+import { GeneralFacts, LeaderboardEntry } from "./GameResults";
 import { useEffect } from "react";
 
 
@@ -10,13 +10,15 @@ export const AppTitle = "Toss Coin"
 interface HomeProps {
   leaderboardData: LeaderboardEntry[];
   setTitle: (t: string) =>void;
+  generalFacts: GeneralFacts;
 }
 
 export const Home: React.FC<HomeProps> = ({
-  leaderboardData,
-  setTitle
+  leaderboardData
+  , setTitle
+  , generalFacts
 }) => {
-  console.log(leaderboardData);
+  console.log(generalFacts);
 
   useEffect (
     () => setTitle("Home")
