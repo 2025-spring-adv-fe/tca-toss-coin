@@ -1,8 +1,21 @@
+import { durationFormatter } from "human-readable";
+
+const formatGameDuration = durationFormatter<string>();
+
+const formatLastPlayed = durationFormatter<string>({
+
+    allowMultiples: ["y","mo","d"]
+});
+
+
+
 //exported interfaces....
 
 export interface GameResult {
     winner: string;
     players: string[];
+    start: string;
+    end: string;
 };
 
 
@@ -11,6 +24,13 @@ export interface LeaderboardEntry {
     losses: number;
     average: string;
     player: string;
+};
+
+export interface GeneralFacts {
+    lastPlayed: string;
+    totalGames: number;
+    shortestGame: string;
+    longestGame: string;
 };
 
 
@@ -45,6 +65,34 @@ export const getLeaderboard = (
         )
 ;
 
+
+export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
+
+    // Calcs for lastPlayed...
+    const now = Date.now();
+
+    const gameEndTimesInMilliseconds = results.map(
+        x => now - Date.parse(x.end)
+    );
+
+    const lastPlayedInMilliseconds = Math.min(...gameEndTimesInMilliseconds);
+
+    // console.log(
+    //     gameEndTimesInMilliseconds
+    // );
+
+    // Calcs for shortest/longest...
+    const gameDurationsInMilliseconds = results.map(
+        x => Date.parse(x.end) - Date.parse(x.start)
+    );
+
+    return {
+        lastPlayed: `${formatLastPlayed(lastPlayedInMilliseconds)} ago`
+        , totalGames: results.length
+        , shortestGame: formatGameDuration(Math.min(...gameDurationsInMilliseconds))
+        , longestGame: formatGameDuration(Math.max(...gameDurationsInMilliseconds))
+    };
+};
 
 
 //Helper functions.............

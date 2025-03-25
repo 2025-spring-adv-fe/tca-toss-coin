@@ -4,34 +4,29 @@ import { AppTitle,Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
 import { useState } from "react";
-import { GameResult, getLeaderboard } from "./GameResults";
+import { GameResult, getGeneralFacts, getLeaderboard } from "./GameResults";
 
 //const dummyGameResults: Array<GameResult> = [
-const dummyGameResults: GameResult[] = [
-  {
-    winner: "Hermione",
-    players: ["Hermione", "Harry", "Ron"],
-  },
-  {
-    winner: "Ron",
-    players: ["Hermione", "Ron"],
-  },
-  {
-    winner: "Larry",
-    players: ["Larry", "Curly", "Moe"],
-  },
-  {
-    winner: "Harry",
-    players: ["Curly", "Harry"],
-  },
-  {
-    winner: "Ron",
-    players: ["Ron", "Voldemort"],
-  },
-  {
-    winner: "Voldemort",
-    players: ["Ron", "Voldemort"],
-  },
+  const dummyGameResults: GameResult[] = [
+    {
+        winner: "Hermione"
+        , players: [
+            "Hermione"
+            , "Harry"
+            , "Ron"
+        ]
+        , start: "2025-03-01T18:20:41.576Z"
+        , end: "2025-03-01T18:35:42.576Z"        
+    }
+    , {
+        winner: "Ron"
+        , players: [
+            "Hermione"
+            , "Ron"
+        ]
+        , start: "2025-03-05T18:40:27.576Z"
+        , end: "2025-03-05T18:45:42.576Z"        
+    }
 ];
 
 const App = () => {
@@ -75,6 +70,9 @@ const App = () => {
                   getLeaderboard(gameResults)
                 }
                 setTitle={setTitle}
+                generalFacts={getGeneralFacts(gameResults)
+                  
+                }
               />
             }
           />
