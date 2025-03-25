@@ -2,28 +2,20 @@ import { useNavigate } from "react-router";
 import { GeneralFacts, LeaderboardEntry } from "./GameResults";
 import { useEffect } from "react";
 
-
-
-export const AppTitle = "Toss Coin"
-
+export const AppTitle = "Toss Coin";
 
 interface HomeProps {
   leaderboardData: LeaderboardEntry[];
-  setTitle: (t: string) =>void;
+  setTitle: (t: string) => void;
   generalFacts: GeneralFacts;
 }
 
 export const Home: React.FC<HomeProps> = ({
-  leaderboardData
-  , setTitle
-  , generalFacts
+  leaderboardData,
+  setTitle,
+  generalFacts,
 }) => {
-  console.log(generalFacts);
-
-  useEffect (
-    () => setTitle("Home")
-    ,[]
-  );
+  useEffect(() => setTitle("Home"), []);
 
   const nav = useNavigate();
 
@@ -35,20 +27,42 @@ export const Home: React.FC<HomeProps> = ({
       >
         Toss Coin
       </button>
+
       <div className="card w-full bg-base-100 card-md shadow-sm">
         <div className="card-body">
-          <h2 className="card-title">leaderboard
+          <h2 className="card-title">General</h2>
+          <div className="overflow-x-auto">
+            <table className="table">
+              <tbody>
+                <tr>
+                  <td>Last Palyed</td>
+                  <td>{generalFacts.lastPlayed}</td>
+                </tr>
+                <tr>
+                  <td>Total Games</td>
+                  <td>{generalFacts.totalGames}</td>
+                </tr>
+                <tr>
+                  <td>Shortest Game</td>
+                  <td>{generalFacts.shortestGame}</td>
+                </tr>
+                <tr>
+                  <td>Longest Game</td>
+                  <td>{generalFacts.longestGame}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-          </h2>
+      <div className="card w-full bg-base-100 card-md shadow-sm">
+        <div className="card-body">
+          <h2 className="card-title">leaderboard</h2>
 
-            {
-            leaderboardData.length > 0
-            ?(
-              <div className="overflow-x-auto">
-
-              <table 
-                className="table"
-              >
+          {leaderboardData.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="table">
                 <thead>
                   <tr>
                     <th>W</th>
@@ -58,37 +72,20 @@ export const Home: React.FC<HomeProps> = ({
                   </tr>
                 </thead>
                 <tbody>
-                    {
-                      leaderboardData.map(
-                        x=> (
-
-                          <tr 
-                              key={x.player}
-                          >
-                              
-                            <td>{x.wins}</td>
-                            <td>{ x.losses }</td>
-                            <td>{x.average }</td>
-                            <td>{x.player}</td>
-                          </tr>
-                        )
-                      )
-                    }
-                  
+                  {leaderboardData.map((x) => (
+                    <tr key={x.player}>
+                      <td>{x.wins}</td>
+                      <td>{x.losses}</td>
+                      <td>{x.average}</td>
+                      <td>{x.player}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-            )
-            :(
-              <p>
-                play a game of toss coin to display thr leaderboard !!!
-              </p>
-            )
-
-            
-            }
-
- 
+          ) : (
+            <p>play a game of toss coin to display thr leaderboard !!!</p>
+          )}
         </div>
       </div>
     </>
