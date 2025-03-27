@@ -26,12 +26,18 @@ export const Setup: React.FC<SetupProps> = ({setTitle
         ,checked:false
       })
     )
-  )
+  );
+
+//
+// other codes for example dertive
+//
+const numberOfChosenPlayers = availablePlayers.filter(x => x.checked).length;
+const twoToSevenPlayersChosen = numberOfChosenPlayers >= 2 && numberOfChosenPlayers <= 7;
+
 
   return (
-    <>
-{/*      
-      <button
+    <>     
+      {/* <button
         className="btn btn-active btn-secondary btn-lg mt-4"
         onClick={() => 
               () => {
@@ -51,26 +57,30 @@ export const Setup: React.FC<SetupProps> = ({setTitle
         }
       >
         Start Tossing
-      </button> */}
+      </button>  */}
       <button
-  className="btn btn-active btn-secondary btn-lg mt-4"
-  onClick={() => {
-    setCurrentPlayers(
-      availablePlayers
-        .filter((x) => x.checked)
-        .map((x) => x.name)
-    );
-    nav("/play");
-  }}
->
-  Start Tossing
-</button>
+        className="btn btn-active btn-secondary btn-lg mt-4 w-full"
+        onClick={() => {
+            setCurrentPlayers(
+            availablePlayers
+            .filter((x) => x.checked)
+            .map((x) => x.name)
+              );
+          nav("/play");
+           }}
+           disabled={!twoToSevenPlayersChosen
+
+           }
+      >
+        Start Tossing
+      </button>
       <div className="mt-4"
       >
         {
         availablePlayers.map(
           x => (
             <label 
+              key={x.name}
               className="block mt-2"
             >
               <input 
