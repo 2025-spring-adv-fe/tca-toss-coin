@@ -29,11 +29,38 @@ export const Setup: React.FC<SetupProps> = ({setTitle
   );
 
 //
+const [newPlayerName, setNewPlayerName] = useState("");
 // other codes for example dertive
 //
+
 const numberOfChosenPlayers = availablePlayers.filter(x => x.checked).length;
 const twoToSevenPlayersChosen = numberOfChosenPlayers >= 2 && numberOfChosenPlayers <= 7;
 
+const duplicatePlayerName = availablePlayers.some(
+    x => x.name.toUpperCase() === newPlayerName.toUpperCase()
+    );
+const validateAndAddNewPlayer = () => {
+  // if invalid
+  if (newPlayerName.length === 0
+      || duplicatePlayerName
+  ) {
+    return;
+  }
+
+    setAvailableplayes(
+        [
+          ...availablePlayers
+          , {
+            name: newPlayerName
+            ,checked:true
+          }
+        ] .sort(
+          (a,b) => a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+        )
+      );
+      setNewPlayerName("");
+      
+    };
 
   return (
     <>     
@@ -68,13 +95,37 @@ const twoToSevenPlayersChosen = numberOfChosenPlayers >= 2 && numberOfChosenPlay
               );
           nav("/play");
            }}
-           disabled={!twoToSevenPlayersChosen
-
-           }
+           disabled={!twoToSevenPlayersChosen}
       >
+        {
+          twoToSevenPlayersChosen
+          ? "start Playing"
+          :"choose 2-7 Players"
+        }
         Start Tossing
       </button>
-      <div className="mt-4"
+      <div className="mt-4 flex">
+        <input 
+          type="text"
+           placeholder ="enter new player name" 
+           className={`input ${duplicatePlayerName ? "input-error" :""}`}
+           value={newPlayerName}
+            onChange={
+              (e) => setNewPlayerName(e.target.value)
+            } 
+           />
+          <button 
+            className="btn btn-outline btn-neutral ml-2"
+            onClick={
+              validateAndAddNewPlayer
+            }
+          >
+            ADD
+          </button>
+
+      </div>
+      <div 
+        className="mt-4"
       >
         {
         availablePlayers.map(
