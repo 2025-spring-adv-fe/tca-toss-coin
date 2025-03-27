@@ -52,6 +52,7 @@ useEffect(
         currentPlayers.map(
          x => (
             <button
+            key={x}
             className="btn btn-active btn-secondary btn-lg mt-4"
             onClick={() => {
               addNewGameResult({
