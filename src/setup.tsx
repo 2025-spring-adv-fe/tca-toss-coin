@@ -4,10 +4,12 @@ import { useNavigate } from "react-router";
 interface SetupProps {
   setTitle: (t: string) => void;
   previousPlayers:string[];
+  setCurrentPlayers: (players: string[]) =>void;
 }
 
 export const Setup: React.FC<SetupProps> = ({setTitle
   ,previousPlayers
+  ,setCurrentPlayers
 }) => {
 
   useEffect(
@@ -28,13 +30,41 @@ export const Setup: React.FC<SetupProps> = ({setTitle
 
   return (
     <>
-     
+{/*      
       <button
         className="btn btn-active btn-secondary btn-lg mt-4"
-        onClick={() => nav("/play")}
+        onClick={() => 
+              () => {
+                setCurrentPlayers(
+                  availablePlayers
+                  .filter(
+                    x => x.checked
+                  )
+                  .map(
+                    x => (
+                      x.name
+                    )
+                  )
+                );
+                nav("/play")
+            }
+        }
       >
         Start Tossing
-      </button>
+      </button> */}
+      <button
+  className="btn btn-active btn-secondary btn-lg mt-4"
+  onClick={() => {
+    setCurrentPlayers(
+      availablePlayers
+        .filter((x) => x.checked)
+        .map((x) => x.name)
+    );
+    nav("/play");
+  }}
+>
+  Start Tossing
+</button>
       <div className="mt-4"
       >
         {
@@ -51,7 +81,7 @@ export const Setup: React.FC<SetupProps> = ({setTitle
                     availablePlayers.map(
                   y => ({
                     name:y.name
-                    ,checked:y.name ===x.name
+                    , checked: y.name ===x.name
                     ? !y.checked
                     : y.checked
                   })
