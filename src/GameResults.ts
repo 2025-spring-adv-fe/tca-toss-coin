@@ -100,6 +100,19 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
         , longestGame: formatGameDuration(Math.max(...gameDurationsInMilliseconds))
     };
 };
+export const getPreviousPlayers = (
+    results: GameResult[]
+) => {
+    const allPlayersForAllGamesWithDupes = results.flatMap(
+        x => x.players
+    );
+
+    return [
+        ...new Set(allPlayersForAllGamesWithDupes)
+    ].sort(
+        (a, b) => a.localeCompare(b)
+    );
+};
 
 
 //Helper functions.............
@@ -137,17 +150,5 @@ const getLeaderboardEntry = (
     };
 };
 
-const getPreviousPlayers = (
-    results: GameResult[]
-) => {
-    const allPlayersForAllGamesWithDupes = results.flatMap(
-        x => x.players
-    );
 
-    return [
-        ...new Set(allPlayersForAllGamesWithDupes)
-    ].sort(
-        (a, b) => a.localeCompare(b)
-    );
-};
 

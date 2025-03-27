@@ -4,7 +4,7 @@ import { AppTitle,Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
 import { useState } from "react";
-import { GameResult, getGeneralFacts, getLeaderboard } from "./GameResults";
+import { GameResult, getGeneralFacts, getLeaderboard, getPreviousPlayers } from "./GameResults";
 
 //const dummyGameResults: Array<GameResult> = [
   const dummyGameResults: GameResult[] = [
@@ -34,11 +34,12 @@ const App = () => {
   //hooks
   //
 
-  const [gameResults, setGameResults] =
-    useState<GameResult[]>(dummyGameResults);
+  const [gameResults, setGameResults] = useState<GameResult[]>(dummyGameResults);
   //const [gameResults,setGameResults] = useState<GameResult[]>([]);
 
   const [title, setTitle] = useState(AppTitle);
+
+  const [currentplayers , setCurrentPlayers] = useState<string[]>([]);
 
   //
   //other not hooks...............
@@ -80,8 +81,10 @@ const App = () => {
             path="/setup"
             element={<Setup
               setTitle={setTitle}
+              previousPlayers={getPreviousPlayers(gameResults)}
+              setCurrentPlayers = {setCurrentPlayers}
               />
-              }
+            }
           />
           <Route
             path="/play"
@@ -89,6 +92,7 @@ const App = () => {
               <Play
                 addNewGameResult={addNewGameResult}
                 setTitle={setTitle}
+                currentPlayers = {currentplayers}
               />
             }
           />
