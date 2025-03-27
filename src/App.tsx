@@ -4,7 +4,7 @@ import { AppTitle,Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
 import { useState } from "react";
-import { GameResult, getGeneralFacts, getLeaderboard } from "./GameResults";
+import { GameResult, getGeneralFacts, getLeaderboard, getPreviousPlayers } from "./GameResults";
 
 //const dummyGameResults: Array<GameResult> = [
   const dummyGameResults: GameResult[] = [
@@ -80,6 +80,7 @@ const App = () => {
             path="/setup"
             element={<Setup
               setTitle={setTitle}
+              previousPlayers={getPreviousPlayers(gameResults)}
               />
               }
           />
