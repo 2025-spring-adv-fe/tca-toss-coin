@@ -35,7 +35,7 @@ export const Home: React.FC<HomeProps> = ({
             <table className="table">
               <tbody>
                 <tr>
-                  <td>Last Palyed</td>
+                  <td>Last Played</td>
                   <td>{generalFacts.lastPlayed}</td>
                 </tr>
                 <tr>
@@ -49,6 +49,10 @@ export const Home: React.FC<HomeProps> = ({
                 <tr>
                   <td>Longest Game</td>
                   <td>{generalFacts.longestGame}</td>
+                </tr>
+                <tr>
+                  <td>Average Turns Per Game</td>
+                  <td>{generalFacts.avgTurnsPerGame}</td>
                 </tr>
               </tbody>
             </table>

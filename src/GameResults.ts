@@ -3,11 +3,8 @@ import { durationFormatter } from "human-readable";
 const formatGameDuration = durationFormatter<string>();
 
 const formatLastPlayed = durationFormatter<string>({
-
-    allowMultiples: ["y","mo","d"]
+    allowMultiples: ["y", "mo", "d"]
 });
-
-
 
 //exported interfaces....
 
@@ -16,39 +13,39 @@ export interface GameResult {
     players: string[];
     start: string;
     end: string;
-};
-
+    turnCount: number; // New property added
+}
 
 export interface LeaderboardEntry {
     wins: number;
     losses: number;
     average: string;
     player: string;
-};
+}
 
 export interface GeneralFacts {
     lastPlayed: string;
     totalGames: number;
     shortestGame: string;
     longestGame: string;
-};
-
+    avgTurnsPerGame: string; // New property added
+}
 
 // exported function.................
-//
+// 
 export const getLeaderboard = (
     results: GameResult[]
-): LeaderboardEntry[] => 
+): LeaderboardEntry[] =>
     getPreviousPlayers(results)
         .map(
             x => getLeaderboardEntry(
-                    results
-                    , x
-                )
+                results,
+                x
+            )
         )
         .sort(
-             (a, b) => {
-                
+            (a, b) => {
+
                 // Some wins with same average, more games makes you higher on the leaderboard...
                 if (Number(a.average) === Number(b.average) && a.wins > 0) {
                     return (b.wins + b.losses) - (a.wins + a.losses);
@@ -62,44 +59,44 @@ export const getLeaderboard = (
                 // Non special case, higher average means higher on leaderboard...
                 return Number(b.average) - Number(a.average);
             }
-        )
-;
-
+        );
 
 export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
- if (results.length == 0) {
-    return {
-        lastPlayed:"n/a"
-        ,totalGames:0
-        ,shortestGame:"n/a"
-        ,longestGame:"n/0"
+    if (results.length == 0) {
+        return {
+            lastPlayed: "n/a",
+            totalGames: 0,
+            shortestGame: "n/a",
+            longestGame: "n/a",
+            avgTurnsPerGame: "n/a" // Default value for no games
+        };
     }
- }
+
     // Calcs for lastPlayed...
     const now = Date.now();
-
     const gameEndTimesInMilliseconds = results.map(
         x => now - Date.parse(x.end)
     );
-
     const lastPlayedInMilliseconds = Math.min(...gameEndTimesInMilliseconds);
-
-    // console.log(
-    //     gameEndTimesInMilliseconds
-    // );
 
     // Calcs for shortest/longest...
     const gameDurationsInMilliseconds = results.map(
         x => Date.parse(x.end) - Date.parse(x.start)
     );
 
+    // Calc for avgTurnsPerGame...
+    const totalTurns = results.reduce((sum, game) => sum + game.turnCount, 0);
+    const avgTurnsPerGame = (totalTurns / results.length).toFixed(2); // Convert to string with 2 decimal places
+
     return {
-        lastPlayed: `${formatLastPlayed(lastPlayedInMilliseconds)} ago`
-        , totalGames: results.length
-        , shortestGame: formatGameDuration(Math.min(...gameDurationsInMilliseconds))
-        , longestGame: formatGameDuration(Math.max(...gameDurationsInMilliseconds))
+        lastPlayed: `${formatLastPlayed(lastPlayedInMilliseconds)} ago`,
+        totalGames: results.length,
+        shortestGame: formatGameDuration(Math.min(...gameDurationsInMilliseconds)),
+        longestGame: formatGameDuration(Math.max(...gameDurationsInMilliseconds)),
+        avgTurnsPerGame: avgTurnsPerGame // Include calculated value
     };
 };
+
 export const getPreviousPlayers = (
     results: GameResult[]
 ) => {
@@ -114,12 +111,11 @@ export const getPreviousPlayers = (
     );
 };
 
-
 //Helper functions.............
-//
+// 
 const getLeaderboardEntry = (
-    results: GameResult[]
-    , player: string
+    results: GameResult[],
+    player: string
 ): LeaderboardEntry => {
 
     const totalGamesForPlayer = results.filter(
@@ -128,9 +124,8 @@ const getLeaderboardEntry = (
         )
     ).length;
 
-
     const wins = results.filter(
-        x => x.winner === player 
+        x => x.winner === player
     ).length;
 
     // console.log(
@@ -139,14 +134,13 @@ const getLeaderboardEntry = (
 
     const avg = totalGamesForPlayer > 0
         ? wins / totalGamesForPlayer
-        : 0
-    ;
+        : 0;
 
     return {
-        wins: wins
-        , losses: totalGamesForPlayer - wins
-        , average: avg.toFixed(3)
-        , player: player
+        wins: wins,
+        losses: totalGamesForPlayer - wins,
+        average: avg.toFixed(2),
+        player: player
     };
 };
 

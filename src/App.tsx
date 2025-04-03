@@ -6,26 +6,27 @@ import { Play } from "./play";
 import { useState } from "react";
 import { GameResult, getGeneralFacts, getLeaderboard, getPreviousPlayers } from "./GameResults";
 
-//const dummyGameResults: Array<GameResult> = [
-  const dummyGameResults: GameResult[] = [
+const dummyGameResults: GameResult[] = [
     {
-        winner: "Hermione"
-        , players: [
-            "Hermione"
-            , "Harry"
-            , "Ron"
-        ]
-        , start: "2025-03-01T18:20:41.576Z"
-        , end: "2025-03-01T18:35:42.576Z"        
-    }
-    , {
-        winner: "Ron"
-        , players: [
-            "Hermione"
-            , "Ron"
-        ]
-        , start: "2025-03-05T18:40:27.576Z"
-        , end: "2025-03-05T18:45:42.576Z"        
+        winner: "Hermione",
+        players: [
+            "Hermione",
+            "Harry",
+            "Ron"
+        ],
+        start: "2025-03-01T18:20:41.576Z",
+        end: "2025-03-01T18:35:42.576Z",
+        turnCount: 15 // Added turnCount
+    },
+    {
+        winner: "Ron",
+        players: [
+            "Hermione",
+            "Ron"
+        ],
+        start: "2025-03-05T18:40:27.576Z",
+        end: "2025-03-05T18:45:42.576Z",
+        turnCount: 10 // Added turnCount
     }
 ];
 

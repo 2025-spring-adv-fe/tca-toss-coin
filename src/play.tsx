@@ -12,66 +12,50 @@ interface PlayProps {
 }
 
 export const Play: React.FC<PlayProps> = ({
-  addNewGameResult
-  ,setTitle
-  ,currentPlayers
+  addNewGameResult,
+  setTitle,
+  currentPlayers,
 }) => {
+  useEffect(() => setTitle("play"), []);
 
-useEffect(
-  () => setTitle("play")
-  ,[]
-);
-
- 
   const nav = useNavigate();
-  const [turnNumber, setTurnNumber] = useState(0);
-  const [startTimestamp] = useState(
-    new Date().toISOString()
-  );
+  const [turnNumber, setTurnNumber] = useState(1); // Initialize turnNumber to 1
+  const [startTimestamp] = useState(new Date().toISOString()); // Initialize startTimestamp
 
   return (
     <>
-      <h4 
-      className="text-lg font-semibold">
+      <h4 className="text-lg font-semibold">
         Turn #{turnNumber}
         <button
           className="btn btn-active btn-lg mt-4"
-          onClick={ () =>{ 
-            setTurnNumber(turnNumber + 1);
+          onClick={() => {
+            setTurnNumber(turnNumber + 1); // Increment turnNumber
             console.log(turnNumber);
-          }
-        }
+          }}
         >
           +
         </button>
       </h4>
-      <div
-        className="grid grid-cols-2 gap-2 mt-4" 
-      >
-        {
-        currentPlayers.map(
-         x => (
-            <button
+      <div className="grid grid-cols-2 gap-2 mt-4">
+        {currentPlayers.map((x) => (
+          <button
             key={x}
             className="btn btn-active btn-secondary btn-lg mt-4"
             onClick={() => {
               addNewGameResult({
-                winner:x
-                ,players:currentPlayers
-                ,start:startTimestamp
-                ,end: new Date().toISOString()
+                winner: x,
+                players: currentPlayers,
+                start: startTimestamp, // Use startTimestamp
+                end: new Date().toISOString(), // Set end timestamp
+                turnCount: turnNumber, // Include turnNumber
               });
-              nav(-2);
+              nav(-2); // Navigate back
             }}
           >
-            {x} Won 
+            {x} Won
           </button>
-
-          )
-        )
-
-        }
-      </div>            
+        ))}
+      </div>
     </>
   );
 };
