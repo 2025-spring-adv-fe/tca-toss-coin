@@ -44,6 +44,8 @@ const App = () => {
 
   const [currentplayers , setCurrentPlayers] = useState<string[]>([]);
 
+  const [darkmode, setDarkMode] = useState(false);
+
   //
   //other not hooks...............
   //
@@ -53,7 +55,8 @@ const App = () => {
 
   return (
     <div 
-      className="p-0"
+      className="p-0 overflow--x-hidden min-h-screen"
+      data-theme={darkmode ? "dark" : "light"}
       >
       <div
         className="navbar bg-base-300 shadow-lg overflow-x-hidden flex flex-col"
@@ -65,7 +68,13 @@ const App = () => {
 
         <label className="swap swap-rotate ml-auto">
           {/* this hidden checkbox controls the state */}
-          <input type="checkbox" />
+          <input 
+          type="checkbox" 
+          onClick={
+            () => setDarkMode(!darkmode)
+            }
+          
+          />
 
           {/* sun icon */}
           <svg
