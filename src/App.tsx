@@ -3,8 +3,9 @@ import { HashRouter, Routes, Route } from "react-router";
 import { AppTitle,Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameResult, getGeneralFacts, getLeaderboard, getPreviousPlayers } from "./GameResults";
+import localforage from "localforage";
 
 const dummyGameResults: GameResult[] = [
     {
@@ -46,13 +47,38 @@ const App = () => {
 
   const [darkmode, setDarkMode] = useState(false);
 
+  useEffect(() => {
+
+    const loadDarkMode = async () => {
+      const savedDarkMode = await localforage.getItem("darkmode")  ?? false;
+      if(!ignore) {
+        setDarkMode(savedDarkMode);
+      }
+      
+
+    };
+    // build the  ignore sandwich for the dark mode
+
+    //
+    //bread on top ...
+    let ignore = false;
+    loadDarkMode();
+    // bread on bottom
+    return () => {
+      ignore = true;
+    };
+      
+    }
+    , []
+  );
+
   //
   //other not hooks...............
   //
 
   const addNewGameResult = (newGameResult: GameResult) =>
     setGameResults([...gameResults, newGameResult]);
-
+// final return the Jsx using any of the state and calculate item from above
   return (
     <div 
       className="p-0 overflow--x-hidden min-h-screen"
@@ -71,7 +97,11 @@ const App = () => {
           <input 
           type="checkbox" 
           onClick={
-            () => setDarkMode(!darkmode)
+            async () => 
+              {
+                const savedDarkMode = await localforage.setItem("darkmode", !darkmode);
+              setDarkMode(savedDarkMode);
+            }
             }
           
           />
