@@ -48,29 +48,22 @@ const App = () => {
   const [darkmode, setDarkMode] = useState(false);
 
   useEffect(() => {
-
     const loadDarkMode = async () => {
-      const savedDarkMode = await localforage.getItem("darkmode")  ?? false;
-      if(!ignore) {
-        setDarkMode(savedDarkMode);
-      }
+      const savedDarkMode = (await localforage.getItem("darkmode")) ?? false;
       
+      // Ensure the value is a boolean
+      if (!ignore) {
+        setDarkMode(Boolean(savedDarkMode));
+      }
+      };
 
-    };
-    // build the  ignore sandwich for the dark mode
-
-    //
-    //bread on top ...
     let ignore = false;
     loadDarkMode();
-    // bread on bottom
+    
     return () => {
       ignore = true;
     };
-      
-    }
-    , []
-  );
+      }, []);
 
   //
   //other not hooks...............
@@ -100,7 +93,7 @@ const App = () => {
             async () => 
               {
                 const savedDarkMode = await localforage.setItem("darkmode", !darkmode);
-              setDarkMode(savedDarkMode);
+              setDarkMode(!!savedDarkMode);
             }
             }
           
