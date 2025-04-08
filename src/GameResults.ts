@@ -13,7 +13,7 @@ export interface GameResult {
     players: string[];
     start: string;
     end: string;
-    turnCount: number; // New property added
+    turnCount: number; 
 }
 
 export interface LeaderboardEntry {
@@ -28,7 +28,7 @@ export interface GeneralFacts {
     totalGames: number;
     shortestGame: string;
     longestGame: string;
-    avgTurnsPerGame: string; // New property added
+    avgTurnsPerGame: string; 
 }
 
 // exported function.................
@@ -68,7 +68,7 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
             totalGames: 0,
             shortestGame: "n/a",
             longestGame: "n/a",
-            avgTurnsPerGame: "n/a" // Default value for no games
+            avgTurnsPerGame: "n/a" 
         };
     }
 
@@ -86,7 +86,7 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
 
     // Calc for avgTurnsPerGame...
     const totalTurns = results.reduce((sum, game) => sum + game.turnCount, 0);
-    const avgTurnsPerGame = (totalTurns / results.length).toFixed(2); // Convert to string with 2 decimal places
+    const avgTurnsPerGame = (totalTurns / results.length).toFixed(2); 
 
     return {
         lastPlayed: `${formatLastPlayed(lastPlayedInMilliseconds)} ago`,

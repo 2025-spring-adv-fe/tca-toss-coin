@@ -18,6 +18,7 @@ export const Home: React.FC<HomeProps> = ({
   useEffect(() => setTitle("Home"), []);
 
   const nav = useNavigate();
+ 
 
   return (
     <>
