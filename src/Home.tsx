@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { GeneralFacts, LeaderboardEntry } from "./GameResults";
 import { useEffect } from "react";
 
@@ -8,12 +8,19 @@ interface HomeProps {
   leaderboardData: LeaderboardEntry[];
   setTitle: (t: string) => void;
   generalFacts: GeneralFacts;
+  //goOutsLeaderboardData: GoOutsLeaderBoardEntry[];
+  gameDurationData: any;
+  gamesByMonthData: Array<[string, number]>;
 }
 
 export const Home: React.FC<HomeProps> = ({
   leaderboardData,
   setTitle,
   generalFacts,
+ // goOutsLeaderboardData,
+  //gameDurationData,
+  gamesByMonthData,
+
 }) => {
   useEffect(() => setTitle("Home"), []);
 
@@ -63,7 +70,11 @@ export const Home: React.FC<HomeProps> = ({
 
       <div className="card w-full bg-base-100 card-md shadow-sm">
         <div className="card-body">
-          <h2 className="card-title">leaderboard</h2>
+          <h2 
+            className="card-title"
+            >
+              leaderboard
+           </h2>
 
           {leaderboardData.length > 0 ? (
             <div className="overflow-x-auto">
@@ -89,10 +100,67 @@ export const Home: React.FC<HomeProps> = ({
               </table>
             </div>
           ) : (
-            <p>play a game of toss coin to display thr leaderboard !!!</p>
+            <p
+              className="mx-3 mb-3"
+            >
+              play a game of toss coin to display thr leaderboard !!!</p>
           )}
         </div>
       </div>
+
+
+
+          { /*  may be  goOutsLeaderboardDatagoes here*/}
+
+          <div className="card w-full bg-base-100 card-md shadow-sm">
+        <div className="card-body">
+          <h2 
+            className="card-title"
+            >
+              Games By Month
+           </h2>
+
+          {gamesByMonthData.length > 0 
+          ? (
+            <div 
+              className="overflow-x-auto">
+              <table 
+                className="table">
+                <thead>
+                  <tr>
+                    <th>MONTH</th>
+                    <th># of Games</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    gamesByMonthData.map(
+                      (x) => (
+                            <tr 
+                               key={x[0]}
+                            >   
+                                <td>
+                                  {x[0]}
+                                </td>
+                                <td>
+                                  {x[1]}
+                                </td>
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p
+              className="mx-3 mb-3"
+            >
+              yeah right, play a game to see :- o
+            </p>
+          )}
+        </div>
+      </div>
+
     </>
   );
 };
