@@ -21,6 +21,7 @@ export const Play: React.FC<PlayProps> = ({
   const nav = useNavigate();
   const [turnNumber, setTurnNumber] = useState(1); // Initialize turnNumber to 1
   const [startTimestamp] = useState(new Date().toISOString()); // Initialize startTimestamp
+  const [pennyTossed, setPennyTossed] = useState(false);
 
   return (
     <>
@@ -36,6 +37,25 @@ export const Play: React.FC<PlayProps> = ({
           +
         </button>
       </h4>
+
+
+      <label className="block mt-2">
+            <input
+              type="checkbox"
+              className="checkbox mr-2"
+              checked={pennyTossed}
+              onChange={
+                () => setPennyTossed(
+                  !pennyTossed
+                )
+              }
+            />
+            Tossed a penny!
+      </label>
+
+
+
+
       <div className="grid grid-cols-2 gap-2 mt-4">
         {currentPlayers.map((x) => (
           <button
@@ -48,6 +68,7 @@ export const Play: React.FC<PlayProps> = ({
                 start: startTimestamp, // Use startTimestamp
                 end: new Date().toISOString(), // Set end timestamp
                 turnCount: turnNumber, // Include turnNumber
+                pennyTossed: pennyTossed, 
               });
               nav(-2); // Navigate back
             }}
