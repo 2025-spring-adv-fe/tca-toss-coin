@@ -4,7 +4,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import { AppTitle, Home } from "./Home";
 import { Setup } from "./setup";
 import { Play } from "./play";
-import { useEffect, useState } from "react";
+import { useEffect,useState,useRef } from "react";
 import {
   GameResult,
   getGeneralFacts,
@@ -34,6 +34,15 @@ const dummyGameResults: GameResult[] = [
 ];
 
 const App: React.FC = () => {
+
+//
+//hooks
+//
+//my order pref is ... ref hooks,  state hooks, effect hooks
+//
+const emailModalRef = useRef<HTMLDialogElement | null>(null);
+
+
   // ← seed with dummyGameResults
   const [gameResults, setGameResults] = useState<GameResult[]>(dummyGameResults);
   const [title, setTitle] = useState<string>(AppTitle);
@@ -58,13 +67,20 @@ const App: React.FC = () => {
       className="p-0 overflow-x-hidden min-h-screen"
       data-theme={darkmode ? "dark" : "light"}
     >
-      <div className="navbar bg-base-300 shadow-lg flex flex-col">
-        <h1 className="text-xl font-bold">
+      <div 
+      className="navbar bg-base-300 shadow-lg flex flex-col"
+      >
+        <h1 
+        className="text-xl font-bold"
+        >
           {title}
-          </h1>
+        </h1>
         <div className="flex gap-1 ml-auto"
         >
-          <button className="btn" 
+          <button className="btn"
+          onClick={
+            () => emailModalRef.current?.showModal()
+          } 
           
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -85,11 +101,41 @@ const App: React.FC = () => {
           <SunIcon className="swap-on h-8 w-8" />
           <MoonIcon className="swap-off h-8 w-8" />
         </label>
-
-        </div>
-
-        
+        </div>  
       </div>
+          <dialog 
+          ref={emailModalRef}
+            className="modal modal-bottom sm:modal-middle"
+          >
+            <div 
+            className="modal-box"
+            >
+            <h3
+              className="font-bold text-lg">
+                Enter email to load & save games.... 
+            </h3>
+            <p 
+            className="py-4"
+            >
+              Press ESC key or click the button below to close
+            </p>
+              <div 
+              className="modal-action"
+              >
+                <form
+                 method="dialog"
+                 >
+                {/* if there is a button in form, it will close the modal */}
+               <button 
+                className="btn"
+               >
+                Close
+              </button>
+                </form>
+              </div>
+              </div>
+          </dialog>
+
 
       <div className="p-4">
         <HashRouter>
