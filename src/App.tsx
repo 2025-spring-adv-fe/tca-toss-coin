@@ -47,7 +47,8 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
   const [gameResults, setGameResults] = useState<GameResult[]>(dummyGameResults);
   const [title, setTitle] = useState<string>(AppTitle);
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
-  const [darkmode, setDarkMode] = useState<boolean>(false);
+  const [darkmode, setDarkMode] = useState(false);
+  const [emailOnModal,setEmailOnModal] = useState("");
 
   // load dark mode
   useEffect(() => {
@@ -117,7 +118,15 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
             <p 
             className="py-4"
             >
-              Press ESC key or click the button below to close
+              
+              <input
+                type="text"
+                placeholder="Enter email address ..."
+                className="input"
+                value={emailOnModal}
+                onChange={(e) => setEmailOnModal(e.target.value)}
+              />
+
             </p>
               <div 
               className="modal-action"
@@ -129,7 +138,7 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
                <button 
                 className="btn"
                >
-                Close
+                Save
               </button>
                 </form>
               </div>
