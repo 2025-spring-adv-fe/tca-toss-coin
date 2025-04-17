@@ -60,6 +60,22 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
     return () => { ignore = true; };
   }, []);
 
+  useEffect(() => {
+
+    const loadEmail = async () => {
+
+      const savedEmail = (await localforage.getItem("email")) ?? "";
+      if (!ignore) {
+         setEmailOnModal(savedEmail);
+    }
+  };
+  let ignore =false;
+  loadEmail();
+  //bread on bottom
+    return () => { ignore = true; };
+  }, []);
+
+
   const addNewGameResult = (r: GameResult) =>
     setGameResults(prev => [...prev, r]);
 
@@ -137,6 +153,12 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
                 {/* if there is a button in form, it will close the modal */}
                <button 
                 className="btn"
+                onClick={
+                  async () => await localforage.setItem(
+                    "email"
+                    , emailOnModal
+                  )
+                }
                >
                 Save
               </button>
@@ -144,7 +166,6 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
               </div>
               </div>
           </dialog>
-
 
       <div className="p-4">
         <HashRouter>
