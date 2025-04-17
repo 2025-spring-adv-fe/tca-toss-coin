@@ -3,12 +3,9 @@ import React, { useEffect, useState } from "react";
 import { GameResult } from "./GameResults";
 
 interface PlayProps {
-
-  addNewGameResult: (r:GameResult) =>void;
-  setTitle: (t: string) =>void;
-  currentPlayers:string[]
-
-  
+  addNewGameResult: (r: GameResult) => void;
+  setTitle: (t: string) => void;
+  currentPlayers: string[];
 }
 
 export const Play: React.FC<PlayProps> = ({
@@ -21,21 +18,33 @@ export const Play: React.FC<PlayProps> = ({
   const nav = useNavigate();
   const [turnNumber, setTurnNumber] = useState(1); // Initialize turnNumber to 1
   const [startTimestamp] = useState(new Date().toISOString()); // Initialize startTimestamp
+  const [pennyTossed, setPennyTossed] = useState(false);
 
   return (
     <>
       <h4 className="text-lg font-semibold">
-        Turn #{turnNumber}
-        <button
-          className="btn btn-active btn-lg mt-4"
-          onClick={() => {
-            setTurnNumber(turnNumber + 1); // Increment turnNumber
-            console.log(turnNumber);
-          }}
-        >
-          +
-        </button>
+        <div className="flex items-center gap-4">
+          Turn #{turnNumber}
+          <button
+            className="btn btn-active btn-md"
+            onClick={() => {
+              setTurnNumber(turnNumber + 1); // Increment turnNumber
+              console.log(turnNumber);
+            }}
+          >
+            +
+          </button>
+        </div>
       </h4>
+      <label className="block mt-2">
+        <input
+          type="checkbox"
+          className="checkbox mr-2"
+          checked={pennyTossed}
+          onChange={() => setPennyTossed(!pennyTossed)}
+        />
+        Tossed a penny
+      </label>
       <div className="grid grid-cols-2 gap-2 mt-4">
         {currentPlayers.map((x) => (
           <button
@@ -48,6 +57,7 @@ export const Play: React.FC<PlayProps> = ({
                 start: startTimestamp, // Use startTimestamp
                 end: new Date().toISOString(), // Set end timestamp
                 turnCount: turnNumber, // Include turnNumber
+                pennyTossed: pennyTossed,
               });
               nav(-2); // Navigate back
             }}

@@ -6,6 +6,7 @@ export interface GameResult {
     start: string;   // ISO timestamp
     end: string;     // ISO timestamp
     turnCount: number;
+    pennyTossed: boolean;
   }
   
   export interface LeaderboardEntry {
@@ -18,6 +19,7 @@ export interface GameResult {
   export interface GeneralFacts {
     lastPlayed: string;    // e.g. "3 days ago"
     totalGames: number;
+    pennyGames: number;
     shortestGame: string;  // e.g. "15m 30s"
     longestGame: string;
     avgTurnsPerGame: string; // e.g. "12.50"
@@ -87,6 +89,7 @@ export interface GameResult {
       return {
         lastPlayed: "n/a",
         totalGames: 0,
+        pennyGames: 0,
         shortestGame: "n/a",
         longestGame: "n/a",
         avgTurnsPerGame: "n/a",
@@ -102,10 +105,15 @@ export interface GameResult {
   
     const totalTurns = results.reduce((sum, r) => sum + r.turnCount, 0);
     const avgTurns = (totalTurns / results.length).toFixed(2);
+
+    const pennyGames = results.filter(
+      x => x.pennyTossed
+    ).length;
   
     return {
       lastPlayed: `${formatRelative(lastMs)} ago`,
       totalGames: results.length,
+      pennyGames: pennyGames,
       shortestGame: formatDuration(shortest),
       longestGame: formatDuration(longest),
       avgTurnsPerGame: avgTurns,

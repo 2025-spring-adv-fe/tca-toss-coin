@@ -19,17 +19,19 @@ import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 const dummyGameResults: GameResult[] = [
   {
     winner: "Hermione",
-    players: ["Hermione", "Harry", "Ron"],
+    players: ["Hermione", "Harry"],
     start: "2025-03-01T18:20:41.576Z",
     end:   "2025-03-01T18:35:42.576Z",
     turnCount: 15,
+    pennyTossed: false,
   },
   {
     winner: "Ron",
-    players: ["Hermione", "Ron"],
+    players: ["Hermione"],
     start: "2025-03-05T18:40:27.576Z",
     end:   "2025-03-05T18:45:42.576Z",
     turnCount: 10,
+    pennyTossed: false,
   },
 ];
 
