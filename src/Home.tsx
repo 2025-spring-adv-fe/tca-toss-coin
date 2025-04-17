@@ -51,6 +51,10 @@ export const Home: React.FC<HomeProps> = ({
                   <td>{generalFacts.totalGames}</td>
                 </tr>
                 <tr>
+                  <td>Penny Gamess</td>
+                  <td>{generalFacts.pennyGames}</td>
+                </tr>
+                <tr>
                   <td>Shortest Game</td>
                   <td>{generalFacts.shortestGame}</td>
                 </tr>
