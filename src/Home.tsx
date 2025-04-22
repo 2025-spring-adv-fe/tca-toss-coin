@@ -30,7 +30,7 @@ export const Home: React.FC<HomeProps> = ({
   return (
     <>
       <button
-        className="btn btn-active btn-secondary btn-lg mt-4"
+        className="btn btn-active btn-secondary btn-lg mt-4 section"
         onClick={() => nav("/setup")}
       >
         Toss Coin

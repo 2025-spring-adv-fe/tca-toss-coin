@@ -14,7 +14,7 @@ import {
 } from "./GameResults";
 import localforage from "localforage";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
-
+import './index.css';
 // Use dummy data so Setup has something to show by default
 const dummyGameResults: GameResult[] = [
   {

@@ -1,0 +1,130 @@
+/* General container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Section titles */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+  
+  }
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  }
+  .section {
+    margin-bottom: 2rem; 
+  }
+  
+  /* Card title */
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #3a3232;
+    text-align: center;
+  }
+  
+  .card-title:hover {
+    color: #112049;
+    background-color: #166ee0;
+  }
+  
+  /* Optional: Responsive text or spacing inside cards */
+  .card-content {
+    font-size: 1rem;
+    color: #283857;
+    line-height: 1.6;
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Leaderboard table */
+  .table {
+    width: 75%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #6e4141;
+    padding: 0.75rem;
+    color: #10151a;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: #8d8080;
+    font-weight: 600;
+  }
+  
+  .table tr:nth-child(even) {
+    background-color: #fafafa;
+    color: #563356;
+  }
+  
+  /* General facts box */
+  .facts-box {
+    background-color: #10151a;
+    border: 1px solid #5a2121;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    line-height: 1.8;
+  }
+  
+  /* Month Chart */
+  .month-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .month-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .bar {
+    height: 1rem;
+    background-color: #4caf50;
+    margin-left: 1rem;
+    flex-grow: 1;
+    border-radius: 4px;
+  }
+  
+  /* Utility */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
