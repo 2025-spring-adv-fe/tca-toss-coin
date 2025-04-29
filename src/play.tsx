@@ -16,8 +16,8 @@ export const Play: React.FC<PlayProps> = ({
   useEffect(() => setTitle("play"), []);
 
   const nav = useNavigate();
-  const [turnNumber, setTurnNumber] = useState(1); // Initialize turnNumber to 1
-  const [startTimestamp] = useState(new Date().toISOString()); // Initialize startTimestamp
+  const [turnNumber, setTurnNumber] = useState(1); 
+  const [startTimestamp] = useState(new Date().toISOString()); 
   const [pennyTossed, setPennyTossed] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ export const Play: React.FC<PlayProps> = ({
           <button
             className="btn btn-active btn-md"
             onClick={() => {
-              setTurnNumber(turnNumber + 1); // Increment turnNumber
+              setTurnNumber(turnNumber + 1); 
               console.log(turnNumber);
             }}
           >
@@ -54,12 +54,12 @@ export const Play: React.FC<PlayProps> = ({
               addNewGameResult({
                 winner: x,
                 players: currentPlayers,
-                start: startTimestamp, // Use startTimestamp
-                end: new Date().toISOString(), // Set end timestamp
-                turnCount: turnNumber, // Include turnNumber
+                start: startTimestamp, 
+                end: new Date().toISOString(), 
+                turnCount: turnNumber, 
                 pennyTossed: pennyTossed,
               });
-              nav(-2); // Navigate back
+              nav(-2); 
             }}
           >
             {x} Won

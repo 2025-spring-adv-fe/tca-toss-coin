@@ -1,10 +1,9 @@
-// src/GameResults.ts
 
 export interface GameResult {
     winner: string;
     players: string[];
-    start: string;   // ISO timestamp
-    end: string;     // ISO timestamp
+    start: string;   
+    end: string;     
     turnCount: number;
     pennyTossed: boolean;
   }
@@ -12,17 +11,17 @@ export interface GameResult {
   export interface LeaderboardEntry {
     wins: number;
     losses: number;
-    average: string;  // formatted "0.00"
+    average: string;  
     player: string;
   }
   
   export interface GeneralFacts {
-    lastPlayed: string;    // e.g. "3 days ago"
+    lastPlayed: string;    
     totalGames: number;
     pennyGames: number;
-    shortestGame: string;  // e.g. "15m 30s"
+    shortestGame: string;  
     longestGame: string;
-    avgTurnsPerGame: string; // e.g. "12.50"
+    avgTurnsPerGame: string; 
   }
   
   // ————————————————————————————
