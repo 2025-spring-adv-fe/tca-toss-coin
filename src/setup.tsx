@@ -18,81 +18,98 @@ export const Setup: React.FC<SetupProps> = ({
   previousPlayers,
   setCurrentPlayers,
 }) => {
+  // set page title
   useEffect(() => {
     setTitle("Setup");
   }, [setTitle]);
 
   const nav = useNavigate();
 
-  const [availablePlayers, setAvailablePlayers] = useState<PlayerOption[]>(
+  // build initial options from past players
+  const [players, setPlayers] = useState<PlayerOption[]>(
     previousPlayers.map((name) => ({ name, checked: false }))
   );
-  const [newPlayerName, setNewPlayerName] = useState("");
+  const [newName, setNewName] = useState("");
 
-  const chosenCount = availablePlayers.filter((p) => p.checked).length;
-  const canStart = chosenCount >= 2 && chosenCount <= 7;
-  const isDuplicate = availablePlayers.some(
-    (p) => p.name.toLowerCase() === newPlayerName.trim().toLowerCase()
+  const minPlayers = 2;
+  const selectedCount = players.filter((p) => p.checked).length;
+  const canStart = selectedCount >= minPlayers && selectedCount <= 7;
+  const isDuplicate = players.some(
+    (p) => p.name.toLowerCase() === newName.trim().toLowerCase()
   );
 
-  const addNewPlayer = () => {
-    const trimmed = newPlayerName.trim();
+  const addPlayer = () => {
+    const trimmed = newName.trim();
     if (!trimmed || isDuplicate) return;
-    setAvailablePlayers((prev) =>
+    setPlayers((prev) =>
       [...prev, { name: trimmed, checked: true }].sort((a, b) =>
         a.name.localeCompare(b.name)
       )
     );
-    setNewPlayerName("");
+    setNewName("");
   };
 
   return (
-    <>
+    <div className="space-y-4">
+      {/* Start button */}
       <button
-        className="btn btn-active btn-secondary btn-lg mt-4 w-full"
+        className="btn btn-primary w-full"
         disabled={!canStart}
         onClick={() => {
-          setCurrentPlayers(
-            availablePlayers.filter((p) => p.checked).map((p) => p.name)
-          );
+          setCurrentPlayers(players.filter((p) => p.checked).map((p) => p.name));
           nav("/play");
         }}
       >
-        {canStart ? "Start Tossing" : "Choose 2 Players"}
+        {canStart
+          ? "Start Game"
+          : `Select ${minPlayers - selectedCount} more player${
+              minPlayers - selectedCount > 1 ? "s" : ""
+            }`}
       </button>
 
-      <div className="mt-4 flex">
+      {/* Add-new form */}
+      <div className="flex gap-2">
         <input
           type="text"
-          placeholder="Enter new player name"
-          className={`input ${isDuplicate ? "input-error" : ""}`}
-          value={newPlayerName}
-          onChange={(e) => setNewPlayerName(e.target.value)}
+          placeholder="New player name"
+          className={`input flex-1 ${isDuplicate ? "input-error" : ""}`}
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
         />
-        <button className="btn btn-outline btn-neutral ml-2" onClick={addNewPlayer}>
-          ADD
+        <button
+          className="btn btn-outline"
+          onClick={addPlayer}
+          disabled={!newName.trim() || isDuplicate}
+        >
+          Add
         </button>
       </div>
 
-      <div className="mt-4">
-        {availablePlayers.map((p) => (
-          <label key={p.name} className="block mt-2">
+      {/* Player checkboxes */}
+      <div className="grid grid-cols-2 gap-2">
+        {players.map((player) => (
+          <label
+            key={player.name}
+            className="label cursor-pointer bg-base-200 p-4 rounded-lg flex items-center"
+          >
             <input
               type="checkbox"
-              className="checkbox mr-2"
-              checked={p.checked}
+              className="checkbox"
+              checked={player.checked}
               onChange={() =>
-                setAvailablePlayers((prev) =>
-                  prev.map((x) =>
-                    x.name === p.name ? { ...x, checked: !x.checked } : x
+                setPlayers((prev) =>
+                  prev.map((p) =>
+                    p.name === player.name
+                      ? { ...p, checked: !p.checked }
+                      : p
                   )
                 )
               }
             />
-            {p.name}
+            <span className="label-text ml-2">{player.name}</span>
           </label>
         ))}
       </div>
-    </>
+    </div>
   );
 };

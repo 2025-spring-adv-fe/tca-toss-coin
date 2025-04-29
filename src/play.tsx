@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router"; 
+import { useNavigate } from "react-router";
 import React, { useEffect, useState } from "react";
 import { GameResult } from "./GameResults";
 
@@ -8,64 +8,58 @@ interface PlayProps {
   currentPlayers: string[];
 }
 
-export const Play: React.FC<PlayProps> = ({
-  addNewGameResult,
-  setTitle,
-  currentPlayers,
-}) => {
+export const Play: React.FC<PlayProps> = ({ addNewGameResult, setTitle, currentPlayers }) => {
   useEffect(() => setTitle("play"), []);
-
   const nav = useNavigate();
-  const [turnNumber, setTurnNumber] = useState(1); 
-  const [startTimestamp] = useState(new Date().toISOString()); 
-  const [pennyTossed, setPennyTossed] = useState(false);
+  const [tosses, setTosses] = useState<Array<'heads' | 'tails'>>([]);
+  const [start] = useState(new Date().toISOString());
 
   return (
-    <>
-      <h4 className="text-lg font-semibold">
-        <div className="flex items-center gap-4">
-          Turn #{turnNumber}
-          <button
-            className="btn btn-active btn-md"
-            onClick={() => {
-              setTurnNumber(turnNumber + 1); 
-              console.log(turnNumber);
-            }}
+    <div className="space-y-4">
+      <div className="bg-base-200 p-4 rounded-lg">
+        <h2 className="text-xl font-bold">Turn #{tosses.length + 1}</h2>
+        <p className="mt-2">Toss History: {tosses.join(', ') || 'None'}</p>
+        
+        <div className="grid grid-cols-2 gap-2 mt-4">
+          <button 
+            className="btn btn-primary h-24 text-2xl"
+            onClick={() => setTosses(prev => [...prev, 'heads'])}
           >
-            +
+            Heads
+          </button>
+          <button
+            className="btn btn-secondary h-24 text-2xl"
+            onClick={() => setTosses(prev => [...prev, 'tails'])}
+          >
+            Tails
           </button>
         </div>
-      </h4>
-      <label className="block mt-2">
-        <input
-          type="checkbox"
-          className="checkbox mr-2"
-          checked={pennyTossed}
-          onChange={() => setPennyTossed(!pennyTossed)}
-        />
-        Tossed a penny
-      </label>
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        {currentPlayers.map((x) => (
+      </div>
+
+      <div className="grid grid-cols-2 gap-2">
+        {currentPlayers.map(player => (
           <button
-            key={x}
-            className="btn btn-active btn-secondary btn-lg mt-4"
+            key={player}
+            className="btn btn-accent btn-lg"
             onClick={() => {
               addNewGameResult({
-                winner: x,
+                winner: player,
                 players: currentPlayers,
-                start: startTimestamp, 
-                end: new Date().toISOString(), 
-                turnCount: turnNumber, 
-                pennyTossed: pennyTossed,
+                start,
+                end: new Date().toISOString(),
+                turnCount: tosses.length,
+                pennyTossed: tosses.length > 0,
+                tosses,
+                headsCount: tosses.filter(t => t === 'heads').length,
+                tailsCount: tosses.filter(t => t === 'tails').length
               });
-              nav(-2); 
+              nav(-2);
             }}
           >
-            {x} Won
+            {player} Wins!
           </button>
         ))}
       </div>
-    </>
+    </div>
   );
 };

@@ -8,163 +8,80 @@ interface HomeProps {
   leaderboardData: LeaderboardEntry[];
   setTitle: (t: string) => void;
   generalFacts: GeneralFacts;
-  //goOutsLeaderboardData: GoOutsLeaderBoardEntry[];
-  gameDurationData: any;
   gamesByMonthData: Array<[string, number]>;
+  gameDurationData: any;
 }
 
 export const Home: React.FC<HomeProps> = ({
   leaderboardData,
   setTitle,
   generalFacts,
- // goOutsLeaderboardData,
-  //gameDurationData,
-  gamesByMonthData,
-
+  gamesByMonthData
 }) => {
   useEffect(() => setTitle("Home"), []);
-
   const nav = useNavigate();
- 
 
   return (
     <>
-      <button
-        className="btn btn-active btn-secondary btn-lg mt-4 section"
-        onClick={() => nav("/setup")}
-      >
+      <button className="btn btn-secondary btn-lg mt-4 section" onClick={() => nav("/setup")}>
         Toss Coin
       </button>
 
-      <div className="card w-full bg-base-100 card-md shadow-sm">
+      <div className="card bg-base-100 shadow-sm">
         <div className="card-body">
-          <h2 className="card-title">General</h2>
-          <div className="overflow-x-auto">
+          <h2 className="card-title">General Stats</h2>
+          <table className="table">
+            <tbody>
+              <tr><td>Last Played</td><td>{generalFacts.lastPlayed}</td></tr>
+              <tr><td>Total Games</td><td>{generalFacts.totalGames}</td></tr>
+              <tr><td>Penny Games</td><td>{generalFacts.pennyGames}</td></tr>
+              <tr><td>Total Tosses</td><td>{generalFacts.totalTosses}</td></tr>
+              <tr><td>Heads %</td><td>{generalFacts.headsPercentage}</td></tr>
+              <tr><td>Tails %</td><td>{generalFacts.tailsPercentage}</td></tr>
+              <tr><td>Shortest Game</td><td>{generalFacts.shortestGame}</td></tr>
+              <tr><td>Longest Game</td><td>{generalFacts.longestGame}</td></tr>
+              <tr><td>Avg Turns</td><td>{generalFacts.avgTurnsPerGame}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="card bg-base-100 shadow-sm mt-4">
+        <div className="card-body">
+          <h2 className="card-title">Leaderboard</h2>
+          {leaderboardData.length ? (
             <table className="table">
+              <thead><tr><th>W</th><th>L</th><th>AVG</th><th>PLAYER</th></tr></thead>
               <tbody>
-                <tr>
-                  <td>Last Played</td>
-                  <td>{generalFacts.lastPlayed}</td>
-                </tr>
-                <tr>
-                  <td>Total Games</td>
-                  <td>{generalFacts.totalGames}</td>
-                </tr>
-                <tr>
-                  <td>Penny Games</td>
-                  <td>{generalFacts.pennyGames}</td>
-                </tr>
-                <tr>
-                  <td>Shortest Game</td>
-                  <td>{generalFacts.shortestGame}</td>
-                </tr>
-                <tr>
-                  <td>Longest Game</td>
-                  <td>{generalFacts.longestGame}</td>
-                </tr>
-                <tr>
-                  <td>Average Turns Per Game</td>
-                  <td>{generalFacts.avgTurnsPerGame}</td>
-                </tr>
+                {leaderboardData.map(x => (
+                  <tr key={x.player}>
+                    <td>{x.wins}</td>
+                    <td>{x.losses}</td>
+                    <td>{x.average}</td>
+                    <td>{x.player}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-          </div>
+          ) : <p>Play a game to see the leaderboard!</p>}
         </div>
       </div>
 
-      <div className="card w-full bg-base-100 card-md shadow-sm">
+      <div className="card bg-base-100 shadow-sm mt-4">
         <div className="card-body">
-          <h2 
-            className="card-title"
-            >
-              leaderboard
-           </h2>
-
-          {leaderboardData.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>AVG</th>
-                    <th>PLAYER</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leaderboardData.map((x) => (
-                    <tr key={x.player}>
-                      <td>{x.wins}</td>
-                      <td>{x.losses}</td>
-                      <td>{x.average}</td>
-                      <td>{x.player}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p
-              className="mx-3 mb-3"
-            >
-              play a game of toss coin to display thr leaderboard !!!</p>
-          )}
+          <h2 className="card-title">Monthly Games</h2>
+          {gamesByMonthData.length ? (
+            <table className="table">
+              <thead><tr><th>Month</th><th>Games</th></tr></thead>
+              <tbody>
+                {gamesByMonthData.map(([month, count]) => (
+                  <tr key={month}><td>{month}</td><td>{count}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          ) : <p>No games recorded yet!</p>}
         </div>
       </div>
-
-
-
-          { /*  may be  goOutsLeaderboardDatagoes here*/}
-
-          <div className="card w-full bg-base-100 card-md shadow-sm">
-        <div className="card-body">
-          <h2 
-            className="card-title"
-            >
-              Games By Month
-           </h2>
-
-          {gamesByMonthData.length > 0 
-          ? (
-            <div 
-              className="overflow-x-auto">
-              <table 
-                className="table">
-                <thead>
-                  <tr>
-                    <th>MONTH</th>
-                    <th># of Games</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    gamesByMonthData.map(
-                      (x) => (
-                            <tr 
-                               key={x[0]}
-                            >   
-                                <td>
-                                  {x[0]}
-                                </td>
-                                <td>
-                                  {x[1]}
-                                </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p
-              className="mx-3 mb-3"
-            >
-              yeah right, play a game to see :- o
-            </p>
-          )}
-        </div>
-      </div>
-
     </>
   );
 };
