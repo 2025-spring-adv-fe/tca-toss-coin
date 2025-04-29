@@ -15,6 +15,10 @@ import {
 import localforage from "localforage";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import './index.css';
+import {
+  saveGameToCloud 
+  , loadGamesFromCloud
+} from './tca-cloud-api';
 // Use dummy data so Setup has something to show by default
 const dummyGameResults: GameResult[] = [
   {
@@ -51,6 +55,7 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
   const [darkmode, setDarkMode] = useState(false);
   const [emailOnModal,setEmailOnModal] = useState("");
+  const [emailForCloudApi, setEmailForCloudApi] = useState("");
 
   // load dark mode
   useEffect(() => {
@@ -69,6 +74,9 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
       const savedEmail = (await localforage.getItem<string>("email")) ?? "";
       if (!ignore) {
          setEmailOnModal(savedEmail);
+         if(savedEmail.length > 0) {
+          setEmailForCloudApi(savedEmail);
+        }
     }
   };
   let ignore =false;
@@ -77,9 +85,40 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
     return () => { ignore = true; };
   }, []);
 
+ //
+  // Other code (not hooks)...
+  //
+  const addNewGameResult = async (
+    newGameResult: GameResult
+  ) => {
 
-  const addNewGameResult = (r: GameResult) =>
-    setGameResults(prev => [...prev, r]);
+    copyTextToClipboard(
+      JSON.stringify(newGameResult)
+    );
+
+    // Save the game to the cloud via the cloud api...
+    if (emailForCloudApi.length > 0) {
+      await saveGameToCloud(
+        emailForCloudApi 
+        , "tca-five-crowns-25s"
+        , newGameResult.end
+        , newGameResult
+      );
+    }
+
+    // Optimistically update the lifted state with the new game result...
+    setGameResults(
+      [
+        ...gameResults
+        , newGameResult
+      ]
+    );
+  };
+
+  //
+  // Finally, return the JSX, using any of the state and calculated items
+  // from above...
+  //
 
   return (
     <div
@@ -175,10 +214,16 @@ const emailModalRef = useRef<HTMLDialogElement | null>(null);
                <button 
                 className="btn"
                 onClick={
-                  async () => await localforage.setItem(
-                    "email"
-                    , emailOnModal
-                  )
+                  async () => {
+                    const savedEmail = await localforage.setItem(
+                      "email"
+                      , emailOnModal
+                    );
+
+                    if (savedEmail.length > 0) {
+                      setEmailForCloudApi(savedEmail);
+                    }
+                  }
                 }
                >
                 Save

@@ -58,7 +58,7 @@ export const Setup: React.FC<SetupProps> = ({
           nav("/play");
         }}
       >
-        {canStart ? "Start Tossing" : "Choose 2–7 Players"}
+        {canStart ? "Start Tossing" : "Choose 2 Players"}
       </button>
 
       <div className="mt-4 flex">
