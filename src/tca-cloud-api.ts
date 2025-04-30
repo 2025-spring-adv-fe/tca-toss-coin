@@ -1,5 +1,5 @@
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { GameResult } from "./GameResults";
+import { GameResult } from './GameResults';
 
 export const saveGameToCloud = async (
   email: string,
@@ -18,9 +18,8 @@ export const saveGameToCloud = async (
     timestamp,
     game: {
       ...game,
-      tosses: game.tosses,
-      headsCount: game.headsCount,
-      tailsCount: game.tailsCount
+      playerGuesses: game.playerGuesses || {},
+      tossResult: game.tossResult || 'heads'
     }
   };
 
@@ -42,7 +41,14 @@ export const loadGamesFromCloud = async (email: string, appName: string) => {
       `https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data/?user=${userKey}&game=${appName}`
     );
     const data = await response.json();
-    return data.Items?.map((item: any) => unmarshall(item).game as GameResult) || [];
+    return data.Items?.map((item: any) => {
+      const game = unmarshall(item).game as GameResult;
+      return {
+        ...game,
+        playerGuesses: game.playerGuesses || {},
+        tossResult: game.tossResult || 'heads'
+      };
+    }) || [];
   } catch (error) {
     console.error("Cloud load failed:", error);
     return [];

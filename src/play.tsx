@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import React, { useEffect, useState } from "react";
 import { GameResult } from "./GameResults";
 
@@ -9,56 +9,68 @@ interface PlayProps {
 }
 
 export const Play: React.FC<PlayProps> = ({ addNewGameResult, setTitle, currentPlayers }) => {
-  useEffect(() => setTitle("play"), []);
+  useEffect(() => setTitle("Play Game"), []);
   const nav = useNavigate();
-  const [tosses, setTosses] = useState<Array<'heads' | 'tails'>>([]);
-  const [start] = useState(new Date().toISOString());
+  const location = useLocation();
+  const [tossResult, setTossResult] = useState<'heads' | 'tails' | null>(null);
+  const [turnCount, setTurnCount] = useState(1);
+  const [playerGuesses] = useState<Record<string, 'heads' | 'tails'>>(
+    location.state?.playerGuesses || {}
+  );
+
+  const handleToss = () => {
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    setTossResult(result);
+    setTurnCount(prev => prev + 1);
+  };
+
+  const recordResult = (winner: string) => {
+    addNewGameResult({
+      winner,
+      players: currentPlayers,
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+      turnCount,
+      playerGuesses,
+      tossResult: tossResult || 'heads'
+    });
+    nav(-2);
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="bg-base-200 p-4 rounded-lg">
-        <h2 className="text-xl font-bold">Turn #{tosses.length + 1}</h2>
-        <p className="mt-2">Toss History: {tosses.join(', ') || 'None'}</p>
-        
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          <button 
-            className="btn btn-primary h-24 text-2xl"
-            onClick={() => setTosses(prev => [...prev, 'heads'])}
-          >
-            Heads
-          </button>
-          <button
-            className="btn btn-secondary h-24 text-2xl"
-            onClick={() => setTosses(prev => [...prev, 'tails'])}
-          >
-            Tails
-          </button>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <div className="card bg-base-100 shadow-lg">
+        <div className="card-body">
+          <h2 className="card-title">Turn #{turnCount}</h2>
+          
+          {Object.entries(playerGuesses).map(([player, guess]) => (
+            <div key={player} className="badge badge-outline">
+              {player}: {guess.toUpperCase()}
+            </div>
+          ))}
 
-      <div className="grid grid-cols-2 gap-2">
-        {currentPlayers.map(player => (
-          <button
-            key={player}
-            className="btn btn-accent btn-lg"
-            onClick={() => {
-              addNewGameResult({
-                winner: player,
-                players: currentPlayers,
-                start,
-                end: new Date().toISOString(),
-                turnCount: tosses.length,
-                pennyTossed: tosses.length > 0,
-                tosses,
-                headsCount: tosses.filter(t => t === 'heads').length,
-                tailsCount: tosses.filter(t => t === 'tails').length
-              });
-              nav(-2);
-            }}
+          <button 
+            className="btn btn-primary btn-lg"
+            onClick={handleToss}
+            disabled={!!tossResult}
           >
-            {player} Wins!
+            {tossResult ? `Result: ${tossResult.toUpperCase()}` : "Flip Coin"}
           </button>
-        ))}
+
+          {tossResult && (
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              {currentPlayers.map(player => (
+                <button
+                  key={player}
+                  className={`btn btn-lg ${playerGuesses[player] === tossResult ? 'btn-success' : 'btn-disabled'}`}
+                  onClick={() => recordResult(player)}
+                >
+                  {player} Wins
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

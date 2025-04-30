@@ -10,23 +10,9 @@ import './index.css';
 import { saveGameToCloud, loadGamesFromCloud } from './tca-cloud-api';
 import { copyTextToClipboard } from "./utils";
 
-const dummyGameResults: GameResult[] = [
-  {
-    winner: "Hermione",
-    players: ["Hermione", "Harry"],
-    start: "2025-03-01T18:20:41.576Z",
-    end: "2025-03-01T18:35:42.576Z",
-    turnCount: 15,
-    pennyTossed: false,
-    tosses: ['heads', 'tails', 'heads'],
-    headsCount: 2,
-    tailsCount: 1
-  }
-];
-
 const App: React.FC = () => {
   const emailModalRef = useRef<HTMLDialogElement>(null);
-  const [gameResults, setGameResults] = useState<GameResult[]>(dummyGameResults);
+  const [gameResults, setGameResults] = useState<GameResult[]>([]);
   const [title, setTitle] = useState(AppTitle);
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
   const [darkMode, setDarkMode] = useState(false);
@@ -36,8 +22,8 @@ const App: React.FC = () => {
   useEffect(() => {
     let ignore = false;
     (async () => {
-      const savedDarkMode = await localforage.getItem("darkmode");
-      if (!ignore) setDarkMode(Boolean(savedDarkMode));
+      const saved = await localforage.getItem("darkmode");
+      if (!ignore) setDarkMode(Boolean(saved));
     })();
     return () => { ignore = true; };
   }, []);
@@ -46,8 +32,8 @@ const App: React.FC = () => {
     let ignore = false;
     const loadGames = async () => {
       if (emailForCloudApi) {
-        const cloudResults = await loadGamesFromCloud(emailForCloudApi, "tca-toss-coin-25s");
-        if (!ignore && cloudResults) setGameResults(cloudResults);
+        const cloudResults = await loadGamesFromCloud(emailForCloudApi, "tca-toss-coin");
+        if (!ignore) setGameResults(cloudResults);
       }
     };
     loadGames();
@@ -57,24 +43,52 @@ const App: React.FC = () => {
   const addNewGameResult = async (result: GameResult) => {
     copyTextToClipboard(JSON.stringify(result));
     if (emailForCloudApi) {
-      await saveGameToCloud(emailForCloudApi, "tca-toss-coin-25s", result.end, result);
+      await saveGameToCloud(emailForCloudApi, "tca-toss-coin", result.end, result);
     }
     setGameResults(prev => [...prev, result]);
   };
 
   return (
-    <div className="min-h-screen p-0 overflow-x-hidden" data-theme={darkMode ? "dark" : "light"}>
-      {/* Navigation and Modal */}
-      <div className="flex shadow-lg navbar bg-base-300">
-        <h1 className="text-xl font-bold">{title}</h1>
-        {/* Dark mode toggle and email button */}
-      </div>
+    <div className="min-h-screen flex flex-col" data-theme={darkMode ? "dark" : "light"}>
+      <header className="navbar bg-base-300 shadow-lg">
+        <h1 className="text-xl font-bold flex-1">{title}</h1>
+        <button 
+          className="btn btn-ghost"
+          onClick={() => emailModalRef.current?.showModal()}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </button>
+      </header>
 
       <dialog ref={emailModalRef} className="modal">
-        {/* Email input modal */}
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Cloud Sync</h3>
+          <div className="py-4">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              className="input input-bordered w-full"
+              value={emailOnModal}
+              onChange={e => setEmailOnModal(e.target.value)}
+            />
+          </div>
+          <div className="modal-action">
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                setEmailForCloudApi(emailOnModal.trim().toLowerCase());
+                emailModalRef.current?.close();
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </div>
       </dialog>
 
-      <div className="p-4">
+      <main className="flex-1 p-4">
         <HashRouter>
           <Routes>
             <Route path="/" element={
@@ -83,7 +97,6 @@ const App: React.FC = () => {
                 setTitle={setTitle}
                 generalFacts={getGeneralFacts(gameResults)}
                 gamesByMonthData={getGamesByMonth(gameResults)}
-                gameDurationData={undefined}
               />
             }/>
             <Route path="/setup" element={
@@ -102,7 +115,7 @@ const App: React.FC = () => {
             }/>
           </Routes>
         </HashRouter>
-      </div>
+      </main>
     </div>
   );
 };
