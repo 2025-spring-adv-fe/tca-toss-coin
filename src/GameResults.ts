@@ -74,7 +74,7 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
   const totalTails = results.length - totalHeads;
 
   return {
-      lastPlayed: `${formatRelative(Date.now() - Math.min(...results.map(r => Date.parse(r.end))))} ago`,
+      lastPlayed: `${formatRelative(Date.now() - Math.max(...results.map(r => Date.parse(r.end))))} ago`,
       totalGames: results.length,
       shortestGame: formatDuration(Math.min(...durations)),
       longestGame: formatDuration(Math.max(...durations)),

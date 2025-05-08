@@ -21,6 +21,7 @@ export const Play: React.FC<PlayProps> = ({ addNewGameResult, setTitle, currentP
 
   return (
     <div className="space-y-4">
+      {/* Coin Toss Card */}
       <div className="card bg-base-200">
         <div className="card-body">
           <h2 className="card-title">Coin Toss</h2>
@@ -33,7 +34,7 @@ export const Play: React.FC<PlayProps> = ({ addNewGameResult, setTitle, currentP
           </button>
         </div>
       </div>
-
+      {/* Guesses Card (Conditional) */}
       {Object.keys(playerGuesses).length > 0 && (
         <div className="card bg-base-200">
           <div className="card-body">
@@ -49,7 +50,7 @@ export const Play: React.FC<PlayProps> = ({ addNewGameResult, setTitle, currentP
           </div>
         </div>
       )}
-
+      {/* “Player Wins” Buttons */}
       <div className="grid grid-cols-2 gap-2">
         {currentPlayers.map(player => (
           <button

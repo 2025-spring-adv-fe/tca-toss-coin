@@ -17,7 +17,7 @@ export const Setup: React.FC<SetupProps> = ({ setTitle, previousPlayers, setCurr
   const nav = useNavigate();
 
   const [availablePlayers, setAvailablePlayers] = useState<PlayerOption[]>(
-    previousPlayers.map(name => ({ name, checked: false }))
+    previousPlayers.map(name => ({ name, checked: false}))
   );
   const [newPlayerName, setNewPlayerName] = useState("");
 
