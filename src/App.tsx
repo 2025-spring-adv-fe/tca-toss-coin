@@ -59,7 +59,7 @@ const App: React.FC = () => {
       if (saved && saved.length > 0) {
         setGameResults(saved);
       } else {
-        setGameResults(dummyGameResults); // Only use dummy if nothing saved
+        setGameResults(dummyGameResults); 
       }
     });
   }, []);
@@ -87,7 +87,7 @@ const App: React.FC = () => {
   // Adds a new game result to state and saves to cloud if email is set
   const addNewGameResult = (newGameResult: GameResult) => {
     setGameResults(prev => [...prev, newGameResult]);
-    // No need to call localforage.setItem here, the above effect will handle it
+  
     if (email) saveGameToCloud(email, "tca-toss-coin", newGameResult.end, newGameResult);
   };
 

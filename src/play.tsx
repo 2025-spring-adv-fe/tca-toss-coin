@@ -4,9 +4,9 @@ import { GameResult } from "./GameResults";
 
 // Props for the Play component
 interface PlayProps {
-  addNewGameResult: (r: GameResult) => void; // Function to add a new game result
-  setTitle: (t: string) => void; // Function to set the page title
-  currentPlayers: string[]; // Array of current player names
+  addNewGameResult: (r: GameResult) => void;
+  setTitle: (t: string) => void;
+  currentPlayers: string[];
 }
 
 // Main Play component for the coin toss game
@@ -17,9 +17,10 @@ export const Play: React.FC<PlayProps> = ({
 }) => {
   // Set the page title to "Play" on mount
   useEffect(() => setTitle("Play"), []);
-  const nav = useNavigate(); // For navigation
-  const location = useLocation(); // For accessing navigation state
+  const nav = useNavigate();
 
+  // For accessing navigation state
+  const location = useLocation();
   // State for the result of the coin toss: 'heads', 'tails', or null if not tossed yet
   const [tossResult, setTossResult] = useState<"heads" | "tails" | null>(null);
 
@@ -96,7 +97,7 @@ export const Play: React.FC<PlayProps> = ({
                 playerGuesses,
                 tossResult: tossResult || "heads",
               });
-              nav("/"); // Go to home after saving result
+              nav("/"); 
             }}
             // Only enabled if the toss has happened and the player's guess matches the result
             disabled={!tossResult || playerGuesses[player] !== tossResult}

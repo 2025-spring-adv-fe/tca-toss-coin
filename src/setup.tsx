@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 
 // Props for the Setup component
 interface SetupProps {
-  setTitle: (t: string) => void;              // Function to set the page title
-  previousPlayers: string[];                  // List of previously used player names
-  setCurrentPlayers: (players: string[]) => void; // Function to set the selected players for the game
+  setTitle: (t: string) => void;              
+  previousPlayers: string[];                  
+  setCurrentPlayers: (players: string[]) => void; 
 }
 
-// Represents a player option in the selection list
+
 interface PlayerOption {
   name: string;
   checked: boolean;
 }
 
 export const Setup: React.FC<SetupProps> = ({ setTitle, previousPlayers, setCurrentPlayers }) => {
-  // Set the page title to "Setup" on mount
+
   useEffect(() => setTitle("Setup"), []);
   const nav = useNavigate(); // For navigation
 
@@ -34,7 +34,7 @@ export const Setup: React.FC<SetupProps> = ({ setTitle, previousPlayers, setCurr
   const isDuplicate = availablePlayers.some(p => 
     p.name.toLowerCase() === newPlayerName.trim().toLowerCase());
 
-  // Adds a new player to the list and selects them
+  
   const addNewPlayer = () => {
     const trimmed = newPlayerName.trim();
     if (!trimmed || isDuplicate) return;
@@ -44,7 +44,6 @@ export const Setup: React.FC<SetupProps> = ({ setTitle, previousPlayers, setCurr
     setNewPlayerName("");
   };
 
-  // Starts the game with the selected players and assigns guesses
   const startGame = () => {
     const selected = availablePlayers.filter(p => p.checked).map(p => p.name);
     const playerGuesses: Record<string, 'heads' | 'tails'> = {};

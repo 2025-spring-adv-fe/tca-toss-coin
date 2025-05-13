@@ -50,7 +50,6 @@ function formatRelative(ms: number): string {
   return rtf.format(secs, "second");
 }
 
-// Builds the leaderboard from all game results
 // Returns an array of LeaderboardEntry sorted by win average descending
 export const getLeaderboard = (results: GameResult[]): LeaderboardEntry[] =>
   Array.from(new Set(results.flatMap(r => r.players)))
@@ -62,11 +61,11 @@ export const getLeaderboard = (results: GameResult[]): LeaderboardEntry[] =>
     })
     .sort((a, b) => Number(b.average) - Number(a.average));
 
-// Returns a sorted list of all players who have played at least one game
+
 export const getPreviousPlayers = (results: GameResult[]): string[] =>
   Array.from(new Set(results.flatMap(r => r.players))).sort();
 
-// Computes general statistics/facts from all game results
+
 export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
   if (!results.length) return {
     lastPlayed: "n/a",
@@ -97,7 +96,7 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFacts => {
   };
 };
 
-// Returns an array of [month, number of games played in that month]
+
 export const getGamesByMonth = (results: GameResult[]): Array<[string, number]> => {
   const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const tally = results.reduce((map, { start }) => {
