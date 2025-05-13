@@ -9,6 +9,7 @@ import localforage from "localforage";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import { saveGameToCloud, loadGamesFromCloud } from "./tca_cloud-api";
 
+// Dummy data for first-time users or if no saved games exist
 const dummyGameResults: GameResult[] = [
   {
     winner: "Hermione",
@@ -22,14 +23,21 @@ const dummyGameResults: GameResult[] = [
 ];
 
 const App: React.FC = () => {
+  // Reference to the email modal dialog
   const emailModalRef = useRef<HTMLDialogElement | null>(null);
-  const [gameResults, setGameResults] = useState<GameResult[]>(dummyGameResults);
+
+  // State for all game results
+  const [gameResults, setGameResults] = useState<GameResult[]>([]);
+  // State for the page title
   const [title, setTitle] = useState<string>(AppTitle);
+  // State for currently selected players
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
+  // State for dark mode toggle
   const [darkmode, setDarkMode] = useState(false);
+  // State for the user's email (for cloud sync)
   const [email, setEmail] = useState("");
 
-  // Load saved settings from localforage
+  // Load saved settings (dark mode and email) from localforage on mount
   useEffect(() => {
     let ignore = false;
     (async () => {
@@ -37,7 +45,6 @@ const App: React.FC = () => {
         localforage.getItem<boolean>("darkmode"),
         localforage.getItem<string>("email")
       ]);
-      
       if (!ignore) {
         setDarkMode(Boolean(savedDarkMode));
         setEmail(savedEmail || "");
@@ -45,6 +52,24 @@ const App: React.FC = () => {
     })();
     return () => { ignore = true; };
   }, []);
+
+  // Load game results from storage on mount (or use dummy data if none)
+  useEffect(() => {
+    localforage.getItem<GameResult[]>("gameResults").then(saved => {
+      if (saved && saved.length > 0) {
+        setGameResults(saved);
+      } else {
+        setGameResults(dummyGameResults); // Only use dummy if nothing saved
+      }
+    });
+  }, []);
+
+  // Save game results to storage whenever gameResults changes
+  useEffect(() => {
+    if (gameResults.length > 0) {
+      localforage.setItem("gameResults", gameResults);
+    }
+  }, [gameResults]);
 
   // Sync with cloud when email changes
   useEffect(() => {
@@ -59,16 +84,20 @@ const App: React.FC = () => {
     return () => { ignore = true; };
   }, [email]);
 
-  const addNewGameResult = async (result: GameResult) => {
-    setGameResults(prev => [...prev, result]);
-    if (email) await saveGameToCloud(email, "tca-toss-coin", result.end, result);
+  // Adds a new game result to state and saves to cloud if email is set
+  const addNewGameResult = (newGameResult: GameResult) => {
+    setGameResults(prev => [...prev, newGameResult]);
+    // No need to call localforage.setItem here, the above effect will handle it
+    if (email) saveGameToCloud(email, "tca-toss-coin", newGameResult.end, newGameResult);
   };
 
   return (
     <div className="min-h-screen p-0 overflow-x-hidden" data-theme={darkmode ? "dark" : "light"}>
+      {/* Navbar with title, cloud/email button, and dark mode toggle */}
       <div className="navbar bg-base-300 shadow-lg px-4">
         <h1 className="text-xl font-bold flex-1">{title}</h1>
         <div className="flex items-center gap-2">
+          {/* Button to open email modal for cloud sync */}
           <button
             className="btn btn-ghost btn-sm"
             onClick={() => emailModalRef.current?.showModal()}
@@ -77,6 +106,7 @@ const App: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
           </button>
+          {/* Dark mode toggle */}
           <label className="swap swap-rotate">
             <input
               type="checkbox"
@@ -93,6 +123,7 @@ const App: React.FC = () => {
         </div>
       </div>
 
+      {/* Modal for entering email for cloud sync */}
       <dialog ref={emailModalRef} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Cloud Sync</h3>
@@ -119,9 +150,11 @@ const App: React.FC = () => {
         </div>
       </dialog>
 
+      {/* Main app content and routing */}
       <div className="p-4">
         <HashRouter>
           <Routes>
+            {/* Home page: shows stats and leaderboard */}
             <Route path="/" element={
               <Home
                 leaderboardData={getLeaderboard(gameResults)}
@@ -130,6 +163,7 @@ const App: React.FC = () => {
                 gamesByMonthData={getGamesByMonth(gameResults)}
               />
             }/>
+            {/* Setup page: select players */}
             <Route path="/setup" element={
               <Setup
                 setTitle={setTitle}
@@ -137,6 +171,7 @@ const App: React.FC = () => {
                 setCurrentPlayers={setCurrentPlayers}
               />
             }/>
+            {/* Play page: play a game */}
             <Route path="/play" element={
               <Play
                 addNewGameResult={addNewGameResult}
